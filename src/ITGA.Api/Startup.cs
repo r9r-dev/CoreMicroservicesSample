@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ITGA.Api.Handlers;
@@ -12,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ITGA.Api
 {
@@ -28,9 +31,29 @@ namespace ITGA.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddLogging();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Title = "ITGA Api Gateway",
+                    Version = "v1",
+                    Description = "API ITGA",
+                    TermsOfService = "None",
+                    Contact = new Contact { Name = "Ronan Lamour", Email = "", Url = "https://twitter.com/PongRaider" },
+                    License = new License { Name = "WTFPL", Url = "http://www.wtfpl.net/" }
+
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var basePath = AppContext.BaseDirectory;
+                var xmlPath = Path.Combine(basePath, "ITGA.Api.xml"); 
+                c.IncludeXmlComments(xmlPath);
+            });
+
             //services.AddRabbitMq(Configuration);
             services.AddCloudAMQPRabbitMq();
-            services.AddTransient<IEventHandler<ActivityCreated>, ActivityCreatedHandler>();
+            services.AddScoped<IEventHandler<ActivityCreated>, ActivityCreatedHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +64,11 @@ namespace ITGA.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ITGA Api Gateway v1");
+            });
             app.UseMvc();
         }
     }

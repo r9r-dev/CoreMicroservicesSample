@@ -18,7 +18,14 @@ namespace ITGA.Api.Controllers
             _busClient = busClient;
         }
 
+        /// <summary>
+        /// Create an activity based on his category.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns>back url containing command id</returns>
+        /// <response code="202">If the command received</response>
         [HttpPost("")]
+        [ProducesResponseType(typeof(Guid), 202)]
         public async Task<IActionResult> Post([FromBody] CreateActivity command)
         {
             command.Id = Guid.NewGuid();
