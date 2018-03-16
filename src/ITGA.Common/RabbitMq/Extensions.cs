@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
@@ -57,7 +58,7 @@ namespace ITGA.Common.RabbitMq
 
         public static void AddCloudAMQPRabbitMq(this IServiceCollection services)
         {
-            var connectionString = "icbxoemq:HnIslapjeB8BfhYL0ulFvy2sRS3sBzii@sheep.rmq.cloudamqp.com/icbxoemq";
+            var connectionString = File.ReadAllText("cloudamqpConnectionString.key");
             var config = ConnectionStringParser.Parse(connectionString);
             var client = RawRabbitFactory.CreateSingleton(new RawRabbitOptions
             {

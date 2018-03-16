@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Authentication;
 using System.Text;
 using ITGA.Common.RabbitMq;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +20,14 @@ namespace ITGA.Common.Mongo
             services.AddSingleton<MongoClient>(c =>
             {
                 var options = c.GetService<IOptions<MongoOptions>>();
-                return new MongoClient(options.Value.ConnectionString);
+                var mongoConnectionString = options.Value.ConnectionString == "*secret*"
+                    ? File.ReadAllText("mongodbConnectionString.key")
+                    : options.Value.ConnectionString;
+                var settings = MongoClientSettings.FromUrl(new MongoUrl(mongoConnectionString));
+                SslProtocols enabledSslProtocol;
+                var sslOk = Enum.TryParse(options.Value.Ssl, true, out enabledSslProtocol);
+                if (sslOk) settings.SslSettings = new SslSettings { EnabledSslProtocols = enabledSslProtocol };
+                return new MongoClient(settings);
             });
             services.AddScoped<IMongoDatabase>(c =>
             {
