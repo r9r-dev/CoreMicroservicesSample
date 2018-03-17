@@ -16,6 +16,15 @@ Micro services
 - RabbitMq running (use CloudAMQP or docker "rabbitmq")
 - Mongodb running (default to dockerized localhost "mongo")
 
+## Application secrets
+For mongodb and rabbitmq, fill theses configuration variables :
+```
+{
+  "mongodb_connectionstring": "mongodb://<username>:<password>@<hostname>:<port>[/<optional_databasename>]",
+  "rabbitmq_connectionstring":  "<username>:<password>@<hostname>/<route>" 
+}
+```
+
 ## Credits/Tools
 - Docker : https://www.docker.com/
 - CloudAMQP : https://www.cloudamqp.com/
