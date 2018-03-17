@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ITGA.Common.Commands;
+using ITGA.Common.Commands.Users;
+using ITGA.Common.Mongo;
+using ITGA.Common.RabbitMq;
+using ITGA.Services.Identity.Domain.Repositories;
+using ITGA.Services.Identity.Domain.Services;
+using ITGA.Services.Identity.Handlers;
+using ITGA.Services.Identity.Repositories;
+using ITGA.Services.Identity.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,16 +33,25 @@ namespace ITGA.Services.Identity
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddLogging();
+            services.AddMongoDB(Configuration);
+            services.AddCloudAMQPRabbitMq();
+            services.AddScoped<ICommandHandler<CreateUser>, CreateUserHandler>();
+            services.AddScoped<IEncrypter, Encrypter>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddDebug();
+            loggerFactory.AddConsole();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.ApplicationServices.GetService<IDatabaseInitializer>().InitializeAsync();
             app.UseMvc();
         }
     }

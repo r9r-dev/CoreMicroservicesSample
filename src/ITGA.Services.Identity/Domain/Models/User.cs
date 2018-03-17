@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ITGA.Common.Exceptions;
+using ITGA.Services.Identity.Domain.Services;
+using RawRabbit.Operations.Publish.Middleware;
 
 namespace ITGA.Services.Identity.Domain.Models
 {
@@ -37,6 +39,19 @@ namespace ITGA.Services.Identity.Domain.Models
             CreatedAt = DateTime.UtcNow;
         }
 
+        public void SetPassword(string password, IEncrypter encrypter)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ITGAException("empty_password", "Password cannont be empty.");
+            }
+
+            Salt = encrypter.GetSalt();
+            Password = encrypter.GetHash(password, Salt);
+        }
+
+        public bool ValidatePassword(string password, IEncrypter encrypter) =>
+            Password.Equals(encrypter.GetHash(password, Salt));
 
     }
 }

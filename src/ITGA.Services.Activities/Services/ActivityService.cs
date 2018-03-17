@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using ITGA.Common.Exceptions;
 using ITGA.Services.Activities.Domain.Models;
 using ITGA.Services.Activities.Domain.Repositories;
+using JetBrains.Annotations;
 
 namespace ITGA.Services.Activities.Services
 {
+    [UsedImplicitly]
     public class ActivityService : IActivityService
     {
         private readonly IActivityRepository _activityRepository;
