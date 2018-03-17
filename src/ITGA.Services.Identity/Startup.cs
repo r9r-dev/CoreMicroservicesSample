@@ -35,7 +35,7 @@ namespace ITGA.Services.Identity
             services.AddMvc();
             services.AddLogging();
             services.AddMongoDB(Configuration);
-            services.AddCloudAMQPRabbitMq();
+            services.AddRabbitMq(Configuration);
             services.AddScoped<ICommandHandler<CreateUser>, CreateUserHandler>();
             services.AddScoped<IEncrypter, Encrypter>();
             services.AddScoped<IUserRepository, UserRepository>();

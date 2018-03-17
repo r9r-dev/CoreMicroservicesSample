@@ -51,8 +51,7 @@ namespace ITGA.Api
                 c.IncludeXmlComments(xmlPath);
             });
 
-            //services.AddRabbitMq(Configuration);
-            services.AddCloudAMQPRabbitMq();
+            services.AddRabbitMq(Configuration);
             services.AddScoped<IEventHandler<ActivityCreated>, ActivityCreatedHandler>();
         }
 

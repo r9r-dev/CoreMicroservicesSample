@@ -44,7 +44,7 @@ namespace ITGA.Common.RabbitMq
 
         private static string GetQueueName<T>() => $"{Assembly.GetEntryAssembly().GetName()}/{typeof(T).Name}";
 
-        public static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
+        public static void AddLocalRabbitMq(this IServiceCollection services, IConfiguration configuration)
         {
             var options = new RabbitMqOptions();
             var section = configuration.GetSection("rabbitmq");
@@ -56,9 +56,9 @@ namespace ITGA.Common.RabbitMq
             services.AddSingleton<IBusClient>(_ => client);
         }
 
-        public static void AddCloudAMQPRabbitMq(this IServiceCollection services)
+        public static void AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = File.ReadAllText("cloudamqpConnectionString.key");
+            var connectionString = configuration["rabbitmq_connectionstring"];
             var config = ConnectionStringParser.Parse(connectionString);
             var client = RawRabbitFactory.CreateSingleton(new RawRabbitOptions
             {

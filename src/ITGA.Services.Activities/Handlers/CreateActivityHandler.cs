@@ -7,11 +7,13 @@ using ITGA.Common.Commands.Activities;
 using ITGA.Common.Events.Activities;
 using ITGA.Common.Exceptions;
 using ITGA.Services.Activities.Services;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using RawRabbit;
 
 namespace ITGA.Services.Activities.Handlers
 {
+    [UsedImplicitly]
     public class CreateActivityHandler : ICommandHandler<CreateActivity>
     {
         private readonly IBusClient _busClient;

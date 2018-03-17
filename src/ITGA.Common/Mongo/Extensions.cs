@@ -21,7 +21,7 @@ namespace ITGA.Common.Mongo
             {
                 var options = c.GetService<IOptions<MongoOptions>>();
                 var mongoConnectionString = options.Value.ConnectionString == "*secret*"
-                    ? File.ReadAllText("mongodbConnectionString.key")
+                    ? configuration["mongodb_connectionstring"]
                     : options.Value.ConnectionString;
                 var settings = MongoClientSettings.FromUrl(new MongoUrl(mongoConnectionString));
                 SslProtocols enabledSslProtocol;

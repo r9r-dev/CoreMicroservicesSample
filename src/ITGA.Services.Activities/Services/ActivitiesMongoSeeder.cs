@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 using ITGA.Common.Mongo;
 using ITGA.Services.Activities.Domain.Models;
 using ITGA.Services.Activities.Domain.Repositories;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace ITGA.Services.Activities.Services
 {
+    [UsedImplicitly]
     public class ActivitiesMongoSeeder : MongoSeeder
     {
         private readonly ICategoryRepository _categoryRepository;
 
-        public ActivitiesMongoSeeder(IMongoDatabase database, ICategoryRepository categoryRepository) : base(database)
+        public ActivitiesMongoSeeder(IMongoDatabase database, ICategoryRepository categoryRepository, ILogger<MongoSeeder> logger) : base(database, logger)
         {
             _categoryRepository = categoryRepository;
         }

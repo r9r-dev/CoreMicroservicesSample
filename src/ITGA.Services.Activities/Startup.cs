@@ -36,8 +36,7 @@ namespace ITGA.Services.Activities
             services.AddMvc();
             services.AddLogging();
             services.AddMongoDB(Configuration);
-            //services.AddRabbitMq(Configuration);
-            services.AddCloudAMQPRabbitMq();
+            services.AddRabbitMq(Configuration);
             services.AddScoped<ICommandHandler<CreateActivity>, CreateActivityHandler>();
             services.AddScoped<IActivityRepository, ActivityRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
