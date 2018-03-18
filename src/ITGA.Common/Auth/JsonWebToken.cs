@@ -4,8 +4,9 @@ using System.Text;
 
 namespace ITGA.Common.Auth
 {
-    public interface IJwtHandler
+    public class JsonWebToken
     {
-        JsonWebToken Create(Guid userId);
+        public string Token { get; set; }
+        public long Expires { get; set; }
     }
 }

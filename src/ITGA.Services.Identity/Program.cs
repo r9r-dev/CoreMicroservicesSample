@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ITGA.Common.Commands.Activities;
+using ITGA.Common.Commands.Users;
 using ITGA.Common.Events.Activities;
 using ITGA.Common.Services;
 using Microsoft.AspNetCore;
@@ -19,7 +20,7 @@ namespace ITGA.Services.Identity
         {
             await ServiceHost.Create<Startup>(args)
                 .UseRabbitMq()
-                .SubscribeToCommand<CreateActivity>()
+                .SubscribeToCommand<CreateUser>()
                 .Build()
                 .Run();
         }

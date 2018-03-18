@@ -21,11 +21,13 @@ namespace ITGA.Common.Mongo
         {
             try
             {
+                _logger.LogInformation("Seeding...");
                 var collectionCursor = await Database.ListCollectionsAsync();
                 var collections = await collectionCursor.ToListAsync();
+                // ignore system collections (starting with system.)
                 var userCollections = collections.Where(x =>
                     !x.Elements.Single(y => y.Name == "name").Value.AsString.StartsWith("system.")).ToList();
-                if (userCollections.Any()) return; // ignore System Collections (starting with system.)
+                if (userCollections.Any()) return;
                 await CustomSeedAsync();
             }
             catch (Exception e)

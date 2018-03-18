@@ -39,7 +39,6 @@ namespace ITGA.Common.Mongo
         private void RegisterConventions()
         {
             ConventionRegistry.Register("ITGAConventions", new MongoConvention(), x => true);
-
         }
 
         private class MongoConvention : IConventionPack
