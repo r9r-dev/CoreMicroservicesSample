@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ITGA.Common.Auth;
 using ITGA.Common.Commands;
 using ITGA.Common.Commands.Users;
 using ITGA.Common.Mongo;
@@ -34,6 +35,7 @@ namespace ITGA.Services.Identity
         {
             services.AddMvc();
             services.AddLogging();
+            services.AddJwt(Configuration);
             services.AddMongoDB(Configuration);
             services.AddRabbitMq(Configuration);
             services.AddScoped<ICommandHandler<CreateUser>, CreateUserHandler>();

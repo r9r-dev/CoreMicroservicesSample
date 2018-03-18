@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ITGA.Api.Handlers;
+using ITGA.Common.Auth;
 using ITGA.Common.Events;
 using ITGA.Common.Events.Activities;
 using ITGA.Common.RabbitMq;
@@ -32,6 +33,7 @@ namespace ITGA.Api
         {
             services.AddMvc();
             services.AddLogging();
+            services.AddJwt(Configuration);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
